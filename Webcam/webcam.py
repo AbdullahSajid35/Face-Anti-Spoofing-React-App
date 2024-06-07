@@ -18,7 +18,7 @@ if model not in ['resnet','yolo']:
     sys.exit(1)
 
 idx_to_class_resnet50 = {0 : "Genuine" , 1:'Printed Paper' , 2 : 'Replayed'}
-idx_to_class_yolo9 = {0: 'genuine_person', 1: 'still_printed_paper', 2: 'quivering_printed_paper', 3: 'lenovo_LCD_display', 4: 'Mac_LCD_display', 5: 'paper_mask'}
+idx_to_class_yolo9 = {0: 'Genuine', 1: 'Printed Paper', 2: 'Replayed', 3: 'Paper Mask'}
 
 transform_data_resnet50=transforms.Compose([
     transforms.Resize(size=(224,224)),
