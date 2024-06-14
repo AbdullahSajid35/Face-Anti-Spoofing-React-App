@@ -20,10 +20,16 @@ CORS(app)
 
 idx_to_class_resnet50 = {0 : "Genuine" , 1:'Printed Paper' , 2 : 'Replayed'}
 idx_to_class_yolo9 = idx_to_class_yolo9 = {0: 'Genuine', 1: 'Printed Paper', 2: 'Replayed', 3: 'Paper Mask'}
+idx_to_class_resnet50_celeba = {0 : "Genuine" , 1:'Printed Paper' , 2 : 'Paper Cut',3:'Replayed',4:'3D Mask'}
 transform_data_resnet50=transforms.Compose([
     transforms.Resize(size=(224,224)),
     # transforms.RandomHorizontalFlip(p=0.5),
     transforms.ToTensor()
+])
+
+transform_data_resnet50_celeba=transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Resize((224,224), antialias=True)
 ])
 
 model_resnet50 = models.resnet50(weights=False)
@@ -31,6 +37,12 @@ num_classes = 3
 model_resnet50.fc = nn.Linear(model_resnet50.fc.in_features, num_classes)
 model_resnet50.load_state_dict(torch.load('resnet50_pytorch_rose_weights.pth',map_location=torch.device('cpu')))
 model_resnet50.eval()
+
+model_resnet50_celeba = models.resnet50(weights=False)
+num_classes = 5
+model_resnet50_celeba.fc = nn.Linear(model_resnet50_celeba.fc.in_features, num_classes)
+model_resnet50_celeba.load_state_dict(torch.load('resnet50_model_weights_celeba.pth',map_location=torch.device('cpu')))
+model_resnet50_celeba.eval()
 
 model_yolo9 = YOLO('yolo9_best.pt')
 print('Models Loaded Successfully')
@@ -72,6 +84,14 @@ def post_data():
             cat = torch.argmax(pred[0]).item()
             prob = round((probabilities[cat] * 100).item(),2)
             name = idx_to_class_resnet50[cat]
+    elif data['model']=='resnet50':
+        transform_img = transform_data_resnet50_celeba(image).unsqueeze(0)
+        with torch.no_grad():
+            pred = model_resnet50_celeba(transform_img)
+            probabilities = F.softmax(pred[0], dim=0)
+            cat = torch.argmax(pred[0]).item()
+            prob = round((probabilities[cat] * 100).item(),2)
+            name = idx_to_class_resnet50_celeba[cat]
     else:
         results = model_yolo9(image)
         name = 'not detectable'

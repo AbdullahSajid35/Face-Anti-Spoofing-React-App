@@ -1,4 +1,7 @@
 /Frontend/node_modules
+/Backend/resnet50_model_weights_celeba.pth
+/Backend/resnet50_pytorch_rose_weights.pth
+/Backend/yolo9_best.pt
 # Logs
 logs
 *.log

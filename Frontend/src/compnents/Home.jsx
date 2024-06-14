@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import "./App.css";
-import SelectBox from "./compnents/Input/SelectBox";
-import ImageUploader from "./compnents/Input/ImageUploader";
+import SelectBox from "../compnents/Input/SelectBox";
 import spoofImage from "/spoofing.webp";
-function App() {
-  const [model, setModel] = useState("resnet");
+import Detection from "./Detection";
 
+function Home() {
+  const [model, setModel] = useState("resnet");
   return (
     <div className="flex flex-col gap-5 px-[80px]">
-      <div className="flex justify-between items-center   mt-[-20px] ">
+      <div className="flex justify-between items-center   mt-[10px] ">
         <h1 className="text-center text-white text-[36px]">
           Face Liveness Detection
         </h1>
@@ -42,11 +41,8 @@ function App() {
           Get Started
         </button>
       </div>
-      <div>
-        <ImageUploader model={model} />
-      </div>
     </div>
   );
 }
 
-export default App;
+export default Home;

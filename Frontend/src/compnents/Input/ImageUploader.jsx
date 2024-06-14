@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import WebcamPhotoCapture from "./WebcamPhotoCapture";
 import WebcamVideoCapture from "./WebcamVideoCapture";
+import FaceImg from "/face_lock.png";
 function ImageUploader({ model = "resnet" }) {
   const [images, setImages] = useState([]);
   const [isImg, setIsImg] = useState(false);
@@ -11,6 +12,7 @@ function ImageUploader({ model = "resnet" }) {
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [isLiveOn, setIsLiveOn] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState(null);
 
   const handleCapture = (getScreenshot) => {
@@ -82,7 +84,7 @@ function ImageUploader({ model = "resnet" }) {
         isDragging,
         dragProps,
       }) => (
-        <div className="upload__image-wrapper flex flex-col gap-6 w-full items-center">
+        <div className="upload__image-wrapper flex flex-col gap-6 w-full items-center  mt-[70px]">
           <div className="flex gap-8">
             <button
               className={`bg-blue-700 text-white p-2 rounded-md ${
@@ -134,6 +136,9 @@ function ImageUploader({ model = "resnet" }) {
           </div>
           {loading && <div>Loading...</div>}
           {error && <div>{error}</div>}
+          {!isCameraOn && !isLiveOn && !loading && !isImg && (
+            <img src={FaceImg} />
+          )}
           {predictedClass && !isCameraOn && !isLiveOn && (
             <div className="flex justify-center mb-[-15px]">
               <h1>
